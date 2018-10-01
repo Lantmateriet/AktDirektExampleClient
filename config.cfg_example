@@ -1,0 +1,7 @@
+# This file is using Docker .env syntax
+# Enter the key and secret you get from the store
+
+SERVICE_URL=https://api-ver.lmv.lm.se/arken/djvu/
+TOKEN_URL=https://api-ver.lmv.lm.se/token
+CONSUMER_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+CONSUMER_SECRET=xxxxxxxxxxxxxxxxxxxxxxxxxxxxx

@@ -1,0 +1,13 @@
+---
+
+strictness: high
+test-warnings: true
+doc-warnings: true
+member-warnings: true
+pep8:
+    full: true
+
+pep257:
+    disable:
+      - D213
+      - D203
