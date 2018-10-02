@@ -4,15 +4,15 @@ Example client for Akt Direkt
 
 English discription:
 
-  This is example client for Swedish Lantmäteriets contract service Akt Direkt.
-  The service makes Lantmäteriets archives available for integration inte customers archives.
+  This is example client for Swedish Lantmäteriet's contract service Akt Direkt.
+  The service makes some of Lantmäteriet's archives available for integration into customers' archives.
   Based on the content of the archives the choice was made to write the documentation in Swedish.
 
 
 Denna applikation är en exempelklient för Lantmäteriets avtalstjänst Akt Direkt.
 Akt Direkt ger kunden tillgång till vissa av Lantmäteriets arkiv för integration i egna system.
 
-Denna applikation är en ganska minimal proxy framför Akt Direkt som tar hand om antentiseringen.
+Denna applikation är en ganska minimal proxy framför Akt Direkt som tar hand om autentiseringen.
 Applikationen har även ett enkelt webb-UI som hjälp för att testa att titta på akter.
 
 Applikation är utvecklad för och testad med Python 3.6 i GNU/Linux miljö.
@@ -33,7 +33,7 @@ Funktioner
 
 * API Proxy http://localhost:5000/document/*.djvu
 
-  * Authentiserande proxy som tar hand om följande anrop:
+  * Autentiserande proxy som tar hand om följande anrop:
     * Genererad URL ovan refererar till http://localhost:5000/document/index.djvu med nödvändiga query parametrar.
     * I index.djvu finns referenser till sidor page_*.djvu
 
