@@ -34,7 +34,7 @@ Funktioner
 * API Proxy http://localhost:5000/document/*.djvu
 
   * Autentiserande proxy som tar hand om följande anrop:
-    * Genererad URL ovan refererar till http://localhost:5000/document/index.djvu med nödvändiga query parametrar.
+    * URLen som genereras av formuläret ovan refererar till http://localhost:5000/document/index.djvu med nödvändiga query parametrar.
     * I index.djvu finns referenser till sidor page_*.djvu
 
   Ex::
