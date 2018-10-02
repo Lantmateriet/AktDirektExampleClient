@@ -86,7 +86,7 @@ Du kan bygga exempel applikationen som en Docker bild och köra den:
 
     $ docker build -t aktdirekt-example .        # Bygg en docker image med applikationen
     $ docker run -it --rm --env-file ./config.cfg -p 5000:5000 aktdirekt-example  # Starta applikationen i förgrunden
-    $ docker run --env-file ./config.cfg -p 5000:5000 aktdirekt-example  # eller Starta applikationen i bakgrunden
+    $ docker run -d --env-file ./config.cfg -p 5000:5000 aktdirekt-example  # eller Starta applikationen i bakgrunden
     $ Öppna http://localhost:5000 i en webbläsare
 
 
