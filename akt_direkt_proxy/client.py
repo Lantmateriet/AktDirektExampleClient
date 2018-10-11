@@ -59,12 +59,14 @@ class AktDirectClient():
 
         returns a requests response object
         """
+        # without the / the last element in service_url may be replaced
+        url = urllib.parse.urljoin(self.service_url + '/', rel_path)
         try:
-            res = self.oauth.get(self.service_url + rel_path, params=params)
+            res = self.oauth.get(url, params=params)
         except TokenExpiredError:
             # If the token has expired get a new one and retry
             self.oauth.token = self._get_token()
-            res = self.oauth.get(self.service_url + rel_path, params=params)
+            res = self.oauth.get(url, params=params)
 
         print(f'Called {res.request.url}', params)
         if not res.ok:
