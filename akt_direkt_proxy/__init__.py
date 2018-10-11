@@ -59,7 +59,7 @@ def _read_config(app, test_config):
     if missing:
         raise ValueError("ERROR, missing the following configuration variables: " +
                          ' '.join(missing))
-    print(app.config)
+    # print(app.config) # This prints you CONSUMER_KEY and SECRET so use with care.
 
 
 def create_app(test_config=None):
