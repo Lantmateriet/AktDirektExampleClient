@@ -102,6 +102,12 @@ Om du har Python 3.6 och `Pipenv <https://docs.pipenv.org/>` installerat så kan
     $ Öppna http://localhost:5000 i en webbläsare
 
 
+Kontaktinformation
+==================
+
+geodatasupport@lm.se
+
+
 License
 =======
 
