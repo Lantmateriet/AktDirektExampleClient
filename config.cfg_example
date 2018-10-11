@@ -1,7 +1,14 @@
 # This file is using Docker .env syntax
 # Enter the key and secret you get from the store
 
-SERVICE_URL=https://api-ver.lmv.lm.se/arken/djvu/
-TOKEN_URL=https://api-ver.lmv.lm.se/token
+# verification environment, not available to customers
+#SERVICE_URL=https://api-ver.lantmateriet.se/distribution/produkter/aktdirekt
+#TOKEN_URL=https://api-ver.lantmateriet.se/token
+
+# production
+SERVICE_URL=https://api.lantmateriet.se/distribution/produkter/aktdirekt
+TOKEN_URL=https://api.lantmateriet.se/token
+
+# These you need to get from the API-Store https://apimanager.lantmateriet.se/store/
 CONSUMER_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 CONSUMER_SECRET=xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
