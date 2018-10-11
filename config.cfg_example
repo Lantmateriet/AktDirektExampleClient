@@ -2,11 +2,11 @@
 # Enter the key and secret you get from the store
 
 # verification environment, not available to customers
-#SERVICE_URL=https://api-ver.lantmateriet.se/distribution/produkter/aktdirekt
+#SERVICE_URL=https://api-ver.lantmateriet.se/distribution/produkter/aktdirekt/v3.0
 #TOKEN_URL=https://api-ver.lantmateriet.se/token
 
 # production
-SERVICE_URL=https://api.lantmateriet.se/distribution/produkter/aktdirekt
+SERVICE_URL=https://api.lantmateriet.se/distribution/produkter/aktdirekt/v3.0
 TOKEN_URL=https://api.lantmateriet.se/token
 
 # These you need to get from the API-Store https://apimanager.lantmateriet.se/store/

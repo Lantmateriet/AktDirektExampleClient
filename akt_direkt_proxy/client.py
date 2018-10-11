@@ -82,7 +82,7 @@ class AktDirectClient():
 
         returns a requests response object
         """
-        rel_path = "v3.0/document/index.djvu"
+        rel_path = "document/index.djvu"
         params = {'archive': archive, 'id': id_}
         res = self._call_service(rel_path, params=params)
         return res
@@ -97,7 +97,7 @@ class AktDirectClient():
         """
         # Needs to encode eventual trailing = in BASE64 coded id
         enc_id = urllib.parse.quote(enc_id)
-        rel_path = f"v3.0/document/page_{vers}_{subdoc}_{page}_{archive}_{enc_id}.djvu"
+        rel_path = f"document/page_{vers}_{subdoc}_{page}_{archive}_{enc_id}.djvu"
         res = self._call_service(rel_path)
         return res
 
@@ -108,6 +108,6 @@ class AktDirectClient():
 
         returns a boolean, True if everything is OK or False if not.
         """
-        rel_path = "v3.0/healthcheck"
+        rel_path = "healthcheck"
         res = self._call_service(rel_path)
         return res.ok
