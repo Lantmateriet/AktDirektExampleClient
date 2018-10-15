@@ -105,7 +105,7 @@ Om du har Python 3.6 och `Pipenv <https://docs.pipenv.org/>` installerat så kan
 Kontaktinformation
 ==================
 
-Support för tjänsten ges av geodatasupport@lm.se
+Support för tjänsten ges enligt avtal.
 
 
 License
