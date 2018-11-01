@@ -58,3 +58,18 @@ def print_app_headers(r):
     headers = {k: v for (k, v) in r.headers.items() if k in wanted_headers}
     print('Headers received from Akt Direkt:', headers)
 
+@bp.route('/healthcheck')
+def get_healthcheck():
+    """Test the connection to the archive system
+
+    to test this service use:
+        curl "http://localhost:5000/healthcheck"
+    """
+    r = flask.current_app.client.get_healthcheck()
+    print_app_headers(r)
+    if r.ok:
+        return flask.Response(r.content, mimetype=r.headers['Content-Type'], status=r.status_code)
+    else:
+        print(r.headers)
+        print(r.text)
+        return flask.Response(r.content, mimetype=r.headers.get('Content-Type', ''), status=r.status_code)

@@ -101,6 +101,18 @@ class AktDirectClient():
         res = self._call_service(rel_path)
         return res
 
+    def get_healthcheck(self):
+        """Make a communication test with Akt Direkt.
+
+        This call test your configuration, communications, authentication and authorization.
+
+        returns a requests response object
+        """
+        rel_path = "healthcheck"
+        res = self._call_service(rel_path)
+
+        return res
+
     def test_connection(self):
         """Make a communication test with Akt Direkt.
 
@@ -108,6 +120,5 @@ class AktDirectClient():
 
         returns a boolean, True if everything is OK or False if not.
         """
-        rel_path = "healthcheck"
-        res = self._call_service(rel_path)
+        res = self.get_healthcheck()
         return res.ok

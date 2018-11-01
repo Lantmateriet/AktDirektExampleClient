@@ -41,6 +41,7 @@ Funktioner
 
     djview "http://localhost:5000/document/index.djvu?archive=21&id=2180k-10/11"
     djview "http://localhost:5000/document/index.djvu?archive=k21g&id=2180k-10/11"
+    curl http://localhost:5000/healthcheck
 
 * API Proxy Bakåtkompatibel med ArkenProxy http://localhost:5000/arkenproxyclient/*
 
