@@ -12,6 +12,10 @@ requests-oauthlib = "*"
 prospector = "*"
 docutils = "*"
 pygments = "*"
+pyyaml = ">= 4.2b4"  # TODO remove this row when 4.2 final is released
 
 [requires]
 python_version = "3.6"
+
+[pipenv]
+allow_prereleases = true  # TODO remove this row when pyyaml 4.2 is released
