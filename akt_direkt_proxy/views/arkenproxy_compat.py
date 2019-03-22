@@ -58,6 +58,7 @@ def get_index_djvu():
         djview "http://localhost:5000/arkenproxyclient/simpleFetchDocument?archive=lm21&document=21-P90%3A90"
     """
     # djview 'http://localhost:8091/arken/djvu/v3.0/document/index.djvu?archive=k21g&id=2180k-10/11'
+    flask.request.charset = 'iso8859-1'
     archive = flask.request.args.get('archive') or flask.request.args.get('county')
     id_ = flask.request.args.get('document')
     r = flask.current_app.client.get_index_djvu(archive, id_)
