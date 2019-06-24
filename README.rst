@@ -31,9 +31,10 @@ Funktioner
   * Laddning av sidan testar kommunikationen med Lantmäteriet och inloggningen.
   * Formulär för generering av korrekt URL för att kunna öppna en akt.
 
-* API Proxy http://localhost:5000/document/*.djvu
+* API Proxy ``http://localhost:5000/document/*.djvu``
 
   * Autentiserande proxy som tar hand om följande anrop:
+
     * URLen som genereras av formuläret ovan refererar till http://localhost:5000/document/index.djvu med nödvändiga query parametrar.
     * I index.djvu finns referenser till sidor page_*.djvu
 
