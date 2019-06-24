@@ -36,3 +36,23 @@ def index_url():
     document_id = flask.request.args.get('document_id')
     index_url = flask.url_for('proxy.get_index_djvu', archive=archive, id=document_id, _external=True)
     return flask.render_template('index_url.html', index_url=index_url)
+
+@bp.route('/update_token')
+def get_update_token():
+    """Force a oauth token update, only used for testing.
+
+    to test this service use:
+        djview "http://localhost:5000/update_token"
+    """
+    flask.current_app.client.update_token()
+    return 'ok'
+
+@bp.route('/break_token')
+def get_break_token():
+    """Break the cached oauth token, only used for testing error handling.
+
+    to test this service use:
+        djview "http://localhost:5000/break_token"
+    """
+    flask.current_app.client.oauth.token = []
+    return 'ok'

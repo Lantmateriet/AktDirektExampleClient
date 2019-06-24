@@ -1,7 +1,7 @@
 """Client library for Akt Direkt service."""
 
 import urllib.parse
-from oauthlib.oauth2 import BackendApplicationClient, TokenExpiredError
+from oauthlib.oauth2 import BackendApplicationClient, TokenExpiredError, OAuth2Error
 from requests.auth import HTTPBasicAuth
 from requests_oauthlib import OAuth2Session
 
@@ -33,24 +33,25 @@ class AktDirectClient():
         self.consumer_key = consumer_key
         self.consumer_secret = consumer_secret
         self.token_url = token_url
+        self._initialize()
 
-        self.auth = HTTPBasicAuth(consumer_key, consumer_secret)
-        self.client = BackendApplicationClient(client_id=consumer_key)
+    def _initialize(self):
+        """Initialize/reinitialize client libraries"""
+        self.auth = HTTPBasicAuth(self.consumer_key, self.consumer_secret)
+        self.client = BackendApplicationClient(client_id=self.consumer_key)
         self.oauth = OAuth2Session(client=self.client)
-        self.oauth.token = self._get_token()
+        self.update_token()
 
-    def _get_token(self):
+    def update_token(self):
         """Fetch new token from server
 
         Get a access token using your consumer key and secret,
         the token will be used to access the service.
         Note that a token has a limited life.
-
-        returns the new token
         """
         token = self.oauth.fetch_token(token_url=self.token_url, auth=self.auth)
         print(f'fetched new token: {token}')
-        return token
+        self.oauth.token = token
 
     def _call_service(self, rel_path, params=None):
         """Call the service and handle token expiration.
@@ -65,7 +66,22 @@ class AktDirectClient():
             res = self.oauth.get(url, params=params)
         except TokenExpiredError:
             # If the token has expired get a new one and retry
-            self.oauth.token = self._get_token()
+            self.update_token()
+            res = self.oauth.get(url, params=params)
+        except OAuth2Error as err:
+            # This is not a case we have seen but to be on the safe side we try to reinitialize
+            # if it happens.
+            print("Got OAuth2Error other than TokenExpiredError, will reinitialize. error was: ",
+                  err)
+            self._initialize()
+            res = self.oauth.get(url, params=params)
+        if not res.ok:
+            # If update_token() fails the next call will result in a 401
+            # We can choose to reinitialize on all errors instead of only 401 because
+            # the Akt-Direkt API do not use HTTP error codes as part of the API.
+            print("Got an HTTP response >= 400, will reinitialize and try again, error was: ",
+                  res.status_code, res.text)
+            self._initialize()
             res = self.oauth.get(url, params=params)
 
         print(f'Called {res.request.url}', params)
