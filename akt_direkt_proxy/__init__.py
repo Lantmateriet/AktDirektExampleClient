@@ -8,7 +8,6 @@ import dotenv
 
 import akt_direkt_proxy.client
 import akt_direkt_proxy.views.proxy
-import akt_direkt_proxy.views.arkenproxy_compat
 import akt_direkt_proxy.views.startpage
 
 __copyright__ = """
@@ -78,7 +77,6 @@ def create_app(test_config=None):
 
     # The API of this web application is modular, lets register the modules (blueprints)
     app.register_blueprint(akt_direkt_proxy.views.proxy.bp)
-    app.register_blueprint(akt_direkt_proxy.views.arkenproxy_compat.bp)
     app.register_blueprint(akt_direkt_proxy.views.startpage.bp)
 
     return app
