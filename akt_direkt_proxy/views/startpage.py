@@ -20,24 +20,29 @@ __copyright__ = """
 
 """
 
-bp = flask.Blueprint('user_interface', __name__, url_prefix='/')
+bp = flask.Blueprint("user_interface", __name__, url_prefix="/")
 
-@bp.route('/')
-@bp.route('/index.html')
+
+@bp.route("/")
+@bp.route("/index.html")
 def index():
     """Generate the startpage with form for generation dossier URLs"""
     test_result = flask.current_app.client.test_connection()
-    return flask.render_template('startpage.html', test_result=test_result)
+    return flask.render_template("startpage.html", test_result=test_result)
 
-@bp.route('/index_url')
+
+@bp.route("/index_url")
 def index_url():
     """Generate a dossier URL"""
-    archive = flask.request.args.get('archive')
-    document_id = flask.request.args.get('document_id')
-    index_url = flask.url_for('proxy.get_index_djvu', archive=archive, id=document_id, _external=True)
-    return flask.render_template('index_url.html', index_url=index_url)
+    archive = flask.request.args.get("archive")
+    document_id = flask.request.args.get("document_id")
+    index_url = flask.url_for(
+        "proxy.get_index_djvu", archive=archive, id=document_id, _external=True
+    )
+    return flask.render_template("index_url.html", index_url=index_url)
 
-@bp.route('/update_token')
+
+@bp.route("/update_token")
 def get_update_token():
     """Force a oauth token update, only used for testing.
 
@@ -45,9 +50,10 @@ def get_update_token():
         djview "http://localhost:5000/update_token"
     """
     flask.current_app.client.update_token()
-    return 'ok'
+    return "ok"
 
-@bp.route('/break_token')
+
+@bp.route("/break_token")
 def get_break_token():
     """Break the cached oauth token, only used for testing error handling.
 
@@ -55,4 +61,4 @@ def get_break_token():
         djview "http://localhost:5000/break_token"
     """
     flask.current_app.client.oauth.token = []
-    return 'ok'
+    return "ok"

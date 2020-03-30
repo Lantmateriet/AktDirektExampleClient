@@ -20,9 +20,10 @@ __copyright__ = """
 
 """
 
-bp = flask.Blueprint('proxy', __name__, url_prefix='/')
+bp = flask.Blueprint("proxy", __name__, url_prefix="/")
 
-@bp.route('/document/index.djvu')
+
+@bp.route("/document/index.djvu")
 def get_index_djvu():
     """Request for a dossiers index.djvu
 
@@ -30,18 +31,23 @@ def get_index_djvu():
         djview "http://localhost:5000/document/index.djvu?archive=k21g&id=2180k-10/11"
     """
     # djview 'http://localhost:8091/arken/djvu/v3.0/document/index.djvu?archive=k21g&id=2180k-10/11'
-    archive = flask.request.args.get('archive')
-    id_ = flask.request.args.get('id')
+    archive = flask.request.args.get("archive")
+    id_ = flask.request.args.get("id")
     r = flask.current_app.client.get_index_djvu(archive, id_)
     print_app_headers(r)
     if r.ok:
-        return flask.Response(r.content, mimetype=r.headers['Content-Type'], status=r.status_code)
+        return flask.Response(
+            r.content, mimetype=r.headers["Content-Type"], status=r.status_code
+        )
     else:
         print(r.headers)
         print(r.text)
-        return flask.Response(r.content, mimetype=r.headers.get('Content-Type', ''), status=r.status_code)
+        return flask.Response(
+            r.content, mimetype=r.headers.get("Content-Type", ""), status=r.status_code
+        )
 
-@bp.route('/document/page_<vers>_<subdoc>_<page>_<archive>_<enc_id>.djvu')
+
+@bp.route("/document/page_<vers>_<subdoc>_<page>_<archive>_<enc_id>.djvu")
 def get_page_djvu(vers, subdoc, page, archive, enc_id):
     """Request for a single page
 
@@ -50,15 +56,19 @@ def get_page_djvu(vers, subdoc, page, archive, enc_id):
     """
     r = flask.current_app.client.get_page_djvu(vers, subdoc, page, archive, enc_id)
     print_app_headers(r)
-    return flask.Response(r.content, mimetype=r.headers['Content-Type'], status=r.status_code)
+    return flask.Response(
+        r.content, mimetype=r.headers["Content-Type"], status=r.status_code
+    )
+
 
 def print_app_headers(r):
     """Print the application specific headers"""
-    wanted_headers = ('Archive', 'Document-ID', 'Error-Code', 'Error-Message')
+    wanted_headers = ("Archive", "Document-ID", "Error-Code", "Error-Message")
     headers = {k: v for (k, v) in r.headers.items() if k in wanted_headers}
-    print('Headers received from Akt Direkt:', headers)
+    print("Headers received from Akt Direkt:", headers)
 
-@bp.route('/healthcheck')
+
+@bp.route("/healthcheck")
 def get_healthcheck():
     """Test the connection to the archive system
 
@@ -68,8 +78,12 @@ def get_healthcheck():
     r = flask.current_app.client.get_healthcheck()
     print_app_headers(r)
     if r.ok:
-        return flask.Response(r.content, mimetype=r.headers['Content-Type'], status=r.status_code)
+        return flask.Response(
+            r.content, mimetype=r.headers["Content-Type"], status=r.status_code
+        )
     else:
         print(r.headers)
         print(r.text)
-        return flask.Response(r.content, mimetype=r.headers.get('Content-Type', ''), status=r.status_code)
+        return flask.Response(
+            r.content, mimetype=r.headers.get("Content-Type", ""), status=r.status_code
+        )

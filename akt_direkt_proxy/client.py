@@ -24,7 +24,7 @@ __copyright__ = """
 """
 
 
-class AktDirectClient():
+class AktDirectClient:
     """Client library for Akt Direkt service."""
 
     def __init__(self, service_url, consumer_key, consumer_secret, token_url):
@@ -50,7 +50,7 @@ class AktDirectClient():
         Note that a token has a limited life.
         """
         token = self.oauth.fetch_token(token_url=self.token_url, auth=self.auth)
-        print(f'fetched new token: {token}')
+        print(f"fetched new token: {token}")
         self.oauth.token = token
 
     def _call_service(self, rel_path, params=None):
@@ -61,7 +61,7 @@ class AktDirectClient():
         returns a requests response object
         """
         # without the / the last element in service_url may be replaced
-        url = urllib.parse.urljoin(self.service_url + '/', rel_path)
+        url = urllib.parse.urljoin(self.service_url + "/", rel_path)
         try:
             res = self.oauth.get(url, params=params)
         except TokenExpiredError:
@@ -71,22 +71,27 @@ class AktDirectClient():
         except OAuth2Error as err:
             # This is not a case we have seen but to be on the safe side we try to reinitialize
             # if it happens.
-            print("Got OAuth2Error other than TokenExpiredError, will reinitialize. error was: ",
-                  err)
+            print(
+                "Got OAuth2Error other than TokenExpiredError, will reinitialize. error was: ",
+                err,
+            )
             self._initialize()
             res = self.oauth.get(url, params=params)
         if not res.ok:
             # If update_token() fails the next call will result in a 401
             # We can choose to reinitialize on all errors instead of only 401 because
             # the Akt-Direkt API do not use HTTP error codes as part of the API.
-            print("Got an HTTP response >= 400, will reinitialize and try again, error was: ",
-                  res.status_code, res.text)
+            print(
+                "Got an HTTP response >= 400, will reinitialize and try again, error was: ",
+                res.status_code,
+                res.text,
+            )
             self._initialize()
             res = self.oauth.get(url, params=params)
 
-        print(f'Called {res.request.url}', params)
+        print(f"Called {res.request.url}", params)
         if not res.ok:
-            print('Call failed, status-code:', res.status_code)
+            print("Call failed, status-code:", res.status_code)
             print(res.text)
         return res
 
@@ -99,7 +104,7 @@ class AktDirectClient():
         returns a requests response object
         """
         rel_path = "document/index.djvu"
-        params = {'archive': archive, 'id': id_}
+        params = {"archive": archive, "id": id_}
         res = self._call_service(rel_path, params=params)
         return res
 

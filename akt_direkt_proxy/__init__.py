@@ -35,20 +35,20 @@ def _read_config(app, test_config):
     If test_config is given it is used instead of the configuration given in
     environment variables.
     """
-    var_names = ('SERVICE_URL', 'TOKEN_URL', 'CONSUMER_KEY', 'CONSUMER_SECRET')
+    var_names = ("SERVICE_URL", "TOKEN_URL", "CONSUMER_KEY", "CONSUMER_SECRET")
     if test_config:
         # load the test config if passed in
         app.config.from_mapping(test_config)
     else:
         # If an ENV file is specified then load it, it will not override existing ENV variables.
         # Load config from file if one is specified
-        env_path = os.environ.get('AKTDIREKT_ENV_FILE', None)
+        env_path = os.environ.get("AKTDIREKT_ENV_FILE", None)
         if env_path:
             dotenv.load_dotenv(dotenv_path=pathlib.Path(env_path))
-            print('loaded environment from ' + env_path)
+            print("loaded environment from " + env_path)
 
         # Read config from ENV variables
-        for var_name in ('SERVICE_URL', 'TOKEN_URL', 'CONSUMER_KEY', 'CONSUMER_SECRET'):
+        for var_name in ("SERVICE_URL", "TOKEN_URL", "CONSUMER_KEY", "CONSUMER_SECRET"):
             var = os.environ.get(var_name, default=None)
             if var:
                 app.config[var_name] = var
@@ -56,8 +56,9 @@ def _read_config(app, test_config):
     # Check that we have the necessary configuration variables
     missing = set(var_names) - app.config.keys()
     if missing:
-        raise ValueError("ERROR, missing the following configuration variables: " +
-                         ' '.join(missing))
+        raise ValueError(
+            "ERROR, missing the following configuration variables: " + " ".join(missing)
+        )
     # print(app.config) # This prints you CONSUMER_KEY and SECRET so use with care.
 
 
@@ -70,10 +71,11 @@ def create_app(test_config=None):
 
     # Create the Akt Direct client and add it to the application context
     app.client = akt_direkt_proxy.client.AktDirectClient(
-        service_url=app.config['SERVICE_URL'],
-        token_url=app.config['TOKEN_URL'],
-        consumer_key=app.config['CONSUMER_KEY'],
-        consumer_secret=app.config['CONSUMER_SECRET'])
+        service_url=app.config["SERVICE_URL"],
+        token_url=app.config["TOKEN_URL"],
+        consumer_key=app.config["CONSUMER_KEY"],
+        consumer_secret=app.config["CONSUMER_SECRET"],
+    )
 
     # The API of this web application is modular, lets register the modules (blueprints)
     app.register_blueprint(akt_direkt_proxy.views.proxy.bp)
