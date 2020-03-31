@@ -1,4 +1,4 @@
-"""web API accepting calls with paths like those used by Akt Direkt"""
+"""Web API accepting calls with paths like those used by Akt Direkt."""
 
 import flask
 
@@ -23,17 +23,16 @@ __copyright__ = """
 bp = flask.Blueprint("proxy", __name__, url_prefix="/")
 
 
-@bp.route("/document/index.djvu")
-def get_index_djvu():
-    """Request for a dossiers index.djvu
+@bp.route("/document/bundle.djvu")
+def get_djvu():
+    """Request for a dossiers bundled DjVU.
 
     to test this service use:
-        djview "http://localhost:5000/document/index.djvu?archive=k21g&id=2180k-10/11"
+        djview "http://localhost:5000/document/bundle.djvu?archive=k21g&id=2180k-10/11"
     """
-    # djview 'http://localhost:8091/arken/djvu/v3.0/document/index.djvu?archive=k21g&id=2180k-10/11'
     archive = flask.request.args.get("archive")
     id_ = flask.request.args.get("id")
-    r = flask.current_app.client.get_index_djvu(archive, id_)
+    r = flask.current_app.client.get_djvu(archive, id_)
     print_app_headers(r)
     if r.ok:
         return flask.Response(
@@ -47,35 +46,39 @@ def get_index_djvu():
         )
 
 
-@bp.route("/document/page_<vers>_<subdoc>_<page>_<archive>_<enc_id>.djvu")
-def get_page_djvu(vers, subdoc, page, archive, enc_id):
-    """Request for a single page
+@bp.route("/document/index.djvu")
+def get_index_djvu():
+    """Request for a dossiers index.djvu.
+
+    This exists for backward compatibility with an older version (V3 API)
+
+    redirects to bundle.djvu
 
     to test this service use:
-        djview 'http://localhost:5000/document/page_1_1_1_k21g_MjE4MGstMTAvMTE=.djvu'
+        djview "http://localhost:5000/document/index.djvu?archive=k21g&id=2180k-10/11"
     """
-    r = flask.current_app.client.get_page_djvu(vers, subdoc, page, archive, enc_id)
-    print_app_headers(r)
-    return flask.Response(
-        r.content, mimetype=r.headers["Content-Type"], status=r.status_code
+    archive = flask.request.args.get("archive")
+    id_ = flask.request.args.get("id")
+    return flask.redirect(
+        flask.url_for("proxy.get_djvu", archive=archive, id=id_), code=302
     )
 
 
 def print_app_headers(r):
-    """Print the application specific headers"""
+    """Print the application specific headers."""
     wanted_headers = ("Archive", "Document-ID", "Error-Code", "Error-Message")
     headers = {k: v for (k, v) in r.headers.items() if k in wanted_headers}
     print("Headers received from Akt Direkt:", headers)
 
 
-@bp.route("/healthcheck")
-def get_healthcheck():
-    """Test the connection to the archive system
+@bp.route("/ping")
+def get_ping():
+    """Test the connection to the archive system.
 
     to test this service use:
-        curl "http://localhost:5000/healthcheck"
+        curl "http://localhost:5000/ping"
     """
-    r = flask.current_app.client.get_healthcheck()
+    r = flask.current_app.client.get_ping()
     print_app_headers(r)
     if r.ok:
         return flask.Response(

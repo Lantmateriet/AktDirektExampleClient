@@ -1,4 +1,4 @@
-"""User interface of the example application"""
+"""User interface of the example application."""
 
 import flask
 
@@ -26,18 +26,18 @@ bp = flask.Blueprint("user_interface", __name__, url_prefix="/")
 @bp.route("/")
 @bp.route("/index.html")
 def index():
-    """Generate the startpage with form for generation dossier URLs"""
+    """Generate the startpage with form for generation dossier URLs."""
     test_result = flask.current_app.client.test_connection()
     return flask.render_template("startpage.html", test_result=test_result)
 
 
 @bp.route("/index_url")
 def index_url():
-    """Generate a dossier URL"""
+    """Generate a dossier URL."""
     archive = flask.request.args.get("archive")
     document_id = flask.request.args.get("document_id")
     index_url = flask.url_for(
-        "proxy.get_index_djvu", archive=archive, id=document_id, _external=True
+        "proxy.get_djvu", archive=archive, id=document_id, _external=True
     )
     return flask.render_template("index_url.html", index_url=index_url)
 

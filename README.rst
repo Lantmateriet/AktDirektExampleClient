@@ -17,6 +17,8 @@ Applikationen har även ett enkelt webb-UI som hjälp för att testa att titta p
 
 Applikation är utvecklad för och testad med Python 3.6 i GNU/Linux miljö.
 
+NOTERA: Denna version av klienten är för version 4 av APIet, för föregånde version se GIT branchen api-v3.
+
 
 Funktioner
 ==========
@@ -35,21 +37,15 @@ Funktioner
 
   * Autentiserande proxy som tar hand om följande anrop:
 
-    * URLen som genereras av formuläret ovan refererar till http://localhost:5000/document/index.djvu med nödvändiga query parametrar.
-    * I index.djvu finns referenser till sidor page_*.djvu
+    * URLen som genereras av formuläret ovan refererar till http://localhost:5000/document/bundle.djvu med nödvändiga query parametrar.
+    * Äldre URL http://localhost:5000/document/index.djvu redirectar nu till ovansående med nödvändiga query parametrar.
 
   Ex::
 
-    djview "http://localhost:5000/document/index.djvu?archive=21&id=2180k-10/11"
-    djview "http://localhost:5000/document/index.djvu?archive=k21g&id=2180k-10/11"
-    curl http://localhost:5000/healthcheck
+    djview "http://localhost:5000/document/bundle.djvu?archive=21&id=2180k-10/11"
+    djview "http://localhost:5000/document/bundle.djvu?archive=k21g&id=2180k-10/11"
+    curl http://localhost:5000/ping  (ersätter tidigare /healthcheck)
 
-* API Proxy Bakåtkompatibel med ArkenProxy http://localhost:5000/arkenproxyclient/*
-
-  Denna ger samma funktionalitet som ovanstående men använder en URL som är Bakåtkompatibel med Arken Proxy.::
-
-    djview "http://localhost:5000/arkenproxyclient/simpleFetchDocument?county=21&document=2180k-10/11"
-    djview "http://localhost:5000/arkenproxyclient/simpleFetchDocument?archive=k21g&document=2180k-10/11"
 
 Files
 =====

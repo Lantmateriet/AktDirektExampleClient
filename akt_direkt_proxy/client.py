@@ -36,14 +36,14 @@ class AktDirectClient:
         self._initialize()
 
     def _initialize(self):
-        """Initialize/reinitialize client libraries"""
+        """Initialize/reinitialize client libraries."""
         self.auth = HTTPBasicAuth(self.consumer_key, self.consumer_secret)
         self.client = BackendApplicationClient(client_id=self.consumer_key)
         self.oauth = OAuth2Session(client=self.client)
         self.update_token()
 
     def update_token(self):
-        """Fetch new token from server
+        """Fetch new token from server.
 
         Get a access token using your consumer key and secret,
         the token will be used to access the service.
@@ -95,41 +95,24 @@ class AktDirectClient:
             print(res.text)
         return res
 
-    def get_index_djvu(self, archive, id_):
-        """Get the dossier index.djvu
-
-        The index.djvu contains a table of content and references (relative URL) to each page,
-        it do's not contain any image data.
+    def get_djvu(self, archive, id_):
+        """Get the dossier as a DjVU.
 
         returns a requests response object
         """
-        rel_path = "document/index.djvu"
+        rel_path = "document/bundle.djvu"
         params = {"archive": archive, "id": id_}
         res = self._call_service(rel_path, params=params)
         return res
 
-    def get_page_djvu(self, vers, subdoc, page, archive, enc_id):
-        """Get a page
-
-        These calls are initialized by the DjVU viewer that the "filename"
-        with the parameter data from the index.djvu.
-
-        returns a requests response object
-        """
-        # Needs to encode eventual trailing = in BASE64 coded id
-        enc_id = urllib.parse.quote(enc_id)
-        rel_path = f"document/page_{vers}_{subdoc}_{page}_{archive}_{enc_id}.djvu"
-        res = self._call_service(rel_path)
-        return res
-
-    def get_healthcheck(self):
+    def get_ping(self):
         """Make a communication test with Akt Direkt.
 
         This call test your configuration, communications, authentication and authorization.
 
         returns a requests response object
         """
-        rel_path = "healthcheck"
+        rel_path = "ping"
         res = self._call_service(rel_path)
 
         return res
@@ -141,5 +124,5 @@ class AktDirectClient:
 
         returns a boolean, True if everything is OK or False if not.
         """
-        res = self.get_healthcheck()
+        res = self.get_ping()
         return res.ok
