@@ -1,0 +1,3 @@
+#!/bin/bash
+# Autoformat all code
+pipenv run black akt_direkt_proxy "$@"
