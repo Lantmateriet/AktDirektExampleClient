@@ -35,9 +35,9 @@ def get_djvu():
     r = flask.current_app.client.get_djvu(archive, id_)
     print_app_headers(r)
     if r.ok:
-        return flask.Response(
-            r.content, mimetype=r.headers["Content-Type"], status=r.status_code
-        )
+        res = flask.send_file(r.raw, mimetype=r.headers["Content-Type"])
+        res.headers["Content-Disposition"] = f"inline; filename=index.djvu"
+        return res
     else:
         print(r.headers)
         print(r.text)

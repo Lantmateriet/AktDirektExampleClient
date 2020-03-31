@@ -53,7 +53,7 @@ class AktDirectClient:
         print(f"fetched new token: {token}")
         self.oauth.token = token
 
-    def _call_service(self, rel_path, params=None):
+    def _call_service(self, rel_path, params=None, stream=False):
         """Call the service and handle token expiration.
 
         This method is used by the get_ and test_ methods in this class.
@@ -63,11 +63,11 @@ class AktDirectClient:
         # without the / the last element in service_url may be replaced
         url = urllib.parse.urljoin(self.service_url + "/", rel_path)
         try:
-            res = self.oauth.get(url, params=params)
+            res = self.oauth.get(url, stream=stream, params=params)
         except TokenExpiredError:
             # If the token has expired get a new one and retry
             self.update_token()
-            res = self.oauth.get(url, params=params)
+            res = self.oauth.get(url, stream=stream, params=params)
         except OAuth2Error as err:
             # This is not a case we have seen but to be on the safe side we try to reinitialize
             # if it happens.
@@ -76,7 +76,7 @@ class AktDirectClient:
                 err,
             )
             self._initialize()
-            res = self.oauth.get(url, params=params)
+            res = self.oauth.get(url, stream=stream, params=params)
         if not res.ok:
             # If update_token() fails the next call will result in a 401
             # We can choose to reinitialize on all errors instead of only 401 because
@@ -87,7 +87,7 @@ class AktDirectClient:
                 res.text,
             )
             self._initialize()
-            res = self.oauth.get(url, params=params)
+            res = self.oauth.get(url, stream=stream, params=params)
 
         print(f"Called {res.request.url}", params)
         if not res.ok:
@@ -102,7 +102,7 @@ class AktDirectClient:
         """
         rel_path = "document/bundle.djvu"
         params = {"archive": archive, "id": id_}
-        res = self._call_service(rel_path, params=params)
+        res = self._call_service(rel_path, stream=True, params=params)
         return res
 
     def get_ping(self):

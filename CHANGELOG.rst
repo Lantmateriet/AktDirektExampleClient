@@ -4,6 +4,7 @@
 * Bytte från Akt Direkt API V3 till V4
 * Tog bort det gamla ArkenProxy bakåtkompatibla APIet.
 * Om du har en existerande config.cfg du vill använda så behöver v3.0 ändas till v4.0 i SERVICE_URL.
+* Storleken på nedladdade filer är betydligt större än med den nya versionen så dom strömmas nu.
 
 2019-06-24
 ==========
