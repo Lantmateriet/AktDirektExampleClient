@@ -12,15 +12,19 @@
 
     <h1>Akt Direkt testklient</h1>
 
-    Test av kommunikationen med Akt Direkt {{ 'lyckades' if test_result else 'misslyckades'}}.
-
+    Test av kommunikationen med Akt Direkt {{ 'lyckades' if test_result else '<h2>misslyckades</h2>'|safe}}.
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
 
     <h2>Generera url för användning med djview eller annan DjVU visare</h2>
 
     <form action="/index_url" method="get"> <table><tbody>
-        <tr><td>Arkiv:</td><td><input id="archive" name="archive" size="4" tabindex="1" type="text" value="" /> ex. 21 eller k21g</td><tr>
-        <tr><td>Aktbeteckning:</td><td><input id="document_id" name="document_id" size="80" tabindex="2" type="text" value="" /> ex. 2180k-10/11</td><tr>
-        <tr><td></td><td><input id="submit" name="submit" tabindex="3" type="submit" value="Generera URL" /></td><tr>
+        <tr><td>Arkiv:</td><td><input id="archive" name="archive" size="4" tabindex="1" type="text" value="" /> ex. 21 eller k21g</td></tr>
+        <tr><td>Aktbeteckning:</td><td><input id="document_id" name="document_id" size="80" tabindex="2" type="text" value="" /> ex. 2180k-10/11</td></tr>
+        <tr><td></td><td><input id="submit" name="submit" tabindex="3" type="submit" value="Generera URL" /></td></tr>
     </tbody> </table> </form>
 
     {# a comment #}
