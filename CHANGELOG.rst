@@ -7,6 +7,8 @@
 * Storleken på nedladdade filer är betydligt större än med den nya versionen så dom strömmas nu.
 * Gjort det tydligare på startsidan när kommunikationstestet misslyckats.
 * Gjort det möjligt att skicka med argument till flask run via start.sh skriptet.
+* Handle token update failure in a user transparent way.
+
 
 2019-06-24
 ==========

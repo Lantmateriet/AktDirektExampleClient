@@ -1,5 +1,6 @@
 """Client library for Akt Direkt service."""
 
+import threading
 import urllib.parse
 from oauthlib.oauth2 import BackendApplicationClient, TokenExpiredError, OAuth2Error
 from requests.auth import HTTPBasicAuth
@@ -33,14 +34,19 @@ class AktDirectClient:
         self.consumer_key = consumer_key
         self.consumer_secret = consumer_secret
         self.token_url = token_url
+        self._update_token_recursion_limiter = threading.Semaphore(
+            1
+        )  # Used to stop recursion in error handling
+        self._init_lock = threading.RLock()
         self._initialize()
 
     def _initialize(self):
         """Initialize/reinitialize client libraries."""
-        self.auth = HTTPBasicAuth(self.consumer_key, self.consumer_secret)
-        self.client = BackendApplicationClient(client_id=self.consumer_key)
-        self.oauth = OAuth2Session(client=self.client)
-        self.update_token()
+        with self._init_lock:
+            self.auth = HTTPBasicAuth(self.consumer_key, self.consumer_secret)
+            self.client = BackendApplicationClient(client_id=self.consumer_key)
+            self.oauth = OAuth2Session(client=self.client)
+            self.update_token()
 
     def update_token(self):
         """Fetch new token from server.
@@ -49,9 +55,25 @@ class AktDirectClient:
         the token will be used to access the service.
         Note that a token has a limited life.
         """
-        token = self.oauth.fetch_token(token_url=self.token_url, auth=self.auth)
-        print(f"fetched new token: {token}")
-        self.oauth.token = token
+        with self._init_lock:
+            try:
+                token = self.oauth.fetch_token(token_url=self.token_url, auth=self.auth)
+                print(f"fetched new token: {token}")
+                self.oauth.token = token
+            except OAuth2Error as err:
+                # We have seen a case where update_token on expiration fails but reinitializaton
+                # works, so if update fails we try to reinitialize.
+                # But initilize calls update_token so if it's a "real" error we needs to stop the error
+                # handling from going into a recursion.
+                with self._update_token_recursion_limiter as recursion_ok:
+                    if not recursion_ok:
+                        raise
+
+                    print(
+                        "Got OAuth2Error when trying to update token, will reinitialize. error was: ",
+                        err,
+                    )
+                    self._initialize()
 
     def _call_service(self, rel_path, params=None, stream=False):
         """Call the service and handle token expiration.
