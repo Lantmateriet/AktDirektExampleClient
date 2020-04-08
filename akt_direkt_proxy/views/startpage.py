@@ -34,8 +34,8 @@ def index():
 @bp.route("/index_url")
 def index_url():
     """Generate a dossier URL."""
-    archive = flask.request.args.get("archive")
-    document_id = flask.request.args.get("document_id")
+    archive = flask.request.args.get("archive").strip()
+    document_id = flask.request.args.get("document_id").strip()
     index_url = flask.url_for(
         "proxy.get_djvu", archive=archive, id=document_id, _external=True
     )

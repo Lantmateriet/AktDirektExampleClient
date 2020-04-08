@@ -30,8 +30,8 @@ def get_djvu():
     to test this service use:
         djview "http://localhost:5000/document/bundle.djvu?archive=k21g&id=2180k-10/11"
     """
-    archive = flask.request.args.get("archive")
-    id_ = flask.request.args.get("id")
+    archive = flask.request.args.get("archive").strip()
+    id_ = flask.request.args.get("id").strip()
     r = flask.current_app.client.get_djvu(archive, id_)
     print_app_headers(r)
     if r.ok:
@@ -57,8 +57,8 @@ def get_index_djvu():
     to test this service use:
         djview "http://localhost:5000/document/index.djvu?archive=k21g&id=2180k-10/11"
     """
-    archive = flask.request.args.get("archive")
-    id_ = flask.request.args.get("id")
+    archive = flask.request.args.get("archive").strip()
+    id_ = flask.request.args.get("id").strip()
     return flask.redirect(
         flask.url_for("proxy.get_djvu", archive=archive, id=id_), code=302
     )
