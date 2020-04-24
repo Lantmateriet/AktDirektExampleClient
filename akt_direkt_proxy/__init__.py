@@ -73,17 +73,6 @@ def create_app(test_config=None):
 
     _read_config(app, test_config)
 
-    if app.config["REVERSE_PROXIED"] == "True":
-        # App is behind a proxy that sets the -For and -Host headers.
-        # This is needed if the application is behind a reverse proxy that
-        # changes how the URL:s look.
-        print("ACTIVATING SUPPORT FOR REVERSE PROXY")
-
-        # x_for – Number of values to trust for X-Forwarded-For.
-        # x_host – Number of values to trust for X-Forwarded-Host.
-        # x_prefix – Number of values to trust for X-Forwarded-Prefix.
-        app = ProxyFix(app, x_for=1, x_host=1, x_prefix=1)
-
     # Create the Akt Direct client and add it to the application context
     app.client = akt_direkt_proxy.client.AktDirectClient(
         service_url=app.config["SERVICE_URL"],
@@ -95,5 +84,16 @@ def create_app(test_config=None):
     # The API of this web application is modular, lets register the modules (blueprints)
     app.register_blueprint(akt_direkt_proxy.views.proxy.bp)
     app.register_blueprint(akt_direkt_proxy.views.startpage.bp)
+
+    if app.config["REVERSE_PROXIED"] == "True":
+        # App is behind a proxy that sets the -For and -Host headers.
+        # This is needed if the application is behind a reverse proxy that
+        # changes how the URL:s look.
+        print("ACTIVATING SUPPORT FOR REVERSE PROXY")
+
+        # x_for – Number of values to trust for X-Forwarded-For.
+        # x_host – Number of values to trust for X-Forwarded-Host.
+        # x_prefix – Number of values to trust for X-Forwarded-Prefix.
+        app = ProxyFix(app, x_for=1, x_host=1, x_prefix=1)
 
     return app
