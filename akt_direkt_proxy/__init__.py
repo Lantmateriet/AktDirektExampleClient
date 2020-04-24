@@ -94,6 +94,6 @@ def create_app(test_config=None):
         # x_for – Number of values to trust for X-Forwarded-For.
         # x_host – Number of values to trust for X-Forwarded-Host.
         # x_prefix – Number of values to trust for X-Forwarded-Prefix.
-        app = ProxyFix(app, x_for=1, x_host=1, x_prefix=1)
+        app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_host=1, x_prefix=1)
 
     return app
