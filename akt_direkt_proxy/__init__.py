@@ -6,6 +6,8 @@ import pathlib
 import flask
 import dotenv
 
+from werkzeug.middleware.proxy_fix import ProxyFix
+
 import akt_direkt_proxy.client
 import akt_direkt_proxy.views.proxy
 import akt_direkt_proxy.views.startpage
@@ -35,7 +37,8 @@ def _read_config(app, test_config):
     If test_config is given it is used instead of the configuration given in
     environment variables.
     """
-    var_names = ("SERVICE_URL", "TOKEN_URL", "CONSUMER_KEY", "CONSUMER_SECRET")
+    mandatory_vars = ("SERVICE_URL", "TOKEN_URL", "CONSUMER_KEY", "CONSUMER_SECRET")
+    defaults = {"REVERSE_PROXIED": "False"}
     if test_config:
         # load the test config if passed in
         app.config.from_mapping(test_config)
@@ -48,13 +51,14 @@ def _read_config(app, test_config):
             print("loaded environment from " + env_path)
 
         # Read config from ENV variables
-        for var_name in ("SERVICE_URL", "TOKEN_URL", "CONSUMER_KEY", "CONSUMER_SECRET"):
-            var = os.environ.get(var_name, default=None)
+        for var_name in set(mandatory_vars) | set(defaults.keys()):
+            var = os.environ.get(var_name, default=defaults.get(var_name, None))
+            print(var_name, var)
             if var:
                 app.config[var_name] = var
 
     # Check that we have the necessary configuration variables
-    missing = set(var_names) - app.config.keys()
+    missing = set(mandatory_vars) - app.config.keys()
     if missing:
         raise ValueError(
             "ERROR, missing the following configuration variables: " + " ".join(missing)
@@ -68,6 +72,17 @@ def create_app(test_config=None):
     app = flask.Flask(__name__)
 
     _read_config(app, test_config)
+
+    if app.config["REVERSE_PROXIED"] == "True":
+        # App is behind a proxy that sets the -For and -Host headers.
+        # This is needed if the application is behind a reverse proxy that
+        # changes how the URL:s look.
+        print("ACTIVATING SUPPORT FOR REVERSE PROXY")
+
+        # x_for – Number of values to trust for X-Forwarded-For.
+        # x_host – Number of values to trust for X-Forwarded-Host.
+        # x_prefix – Number of values to trust for X-Forwarded-Prefix.
+        app = ProxyFix(app, x_for=1, x_host=1, x_prefix=1)
 
     # Create the Akt Direct client and add it to the application context
     app.client = akt_direkt_proxy.client.AktDirectClient(

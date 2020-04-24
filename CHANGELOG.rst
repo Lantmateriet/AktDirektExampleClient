@@ -8,6 +8,7 @@
 * Gjort det tydligare på startsidan när kommunikationstestet misslyckats.
 * Gjort det möjligt att skicka med argument till flask run via start.sh skriptet.
 * Handle token update failure in a user transparent way.
+* Lagt till stöd för reverse-proxy (används internt på LMV).
 
 
 2019-06-24
