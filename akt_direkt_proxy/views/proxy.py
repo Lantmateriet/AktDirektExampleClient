@@ -27,12 +27,39 @@ bp = flask.Blueprint("proxy", __name__, url_prefix="/")
 def get_djvu():
     """Request for a dossiers bundled DjVU.
 
+    Get upstream errors reported as with HTTP error codes and JSON error messages.
+
     to test this service use:
         djview "http://localhost:5000/document/bundle.djvu?archive=k21g&id=2180k-10/11"
     """
     archive = flask.request.args.get("archive").strip()
     id_ = flask.request.args.get("id").strip()
     r = flask.current_app.client.get_djvu(archive, id_)
+    print_app_headers(r)
+    if r.ok:
+        res = flask.send_file(r.raw, mimetype=r.headers["Content-Type"])
+        res.headers["Content-Disposition"] = f"inline; filename=index.djvu"
+        return res
+    else:
+        print(r.headers)
+        print(r.text)
+        return flask.Response(
+            r.content, mimetype=r.headers.get("Content-Type", ""), status=r.status_code
+        )
+
+
+@bp.route("/document/djvu_on_error/bundle.djvu")
+def get_djvu_djvu_on_error():
+    """Request for a dossiers bundled DjVU.
+
+    Get upstream errors reported as DjVU images.
+
+    to test this service use:
+        djview "http://localhost:5000/document/djvu_on_error/bundle.djvu?archive=k21g&id=2180k-10/11"
+    """
+    archive = flask.request.args.get("archive").strip()
+    id_ = flask.request.args.get("id").strip()
+    r = flask.current_app.client.get_djvu_djvu_on_error(archive, id_)
     print_app_headers(r)
     if r.ok:
         res = flask.send_file(r.raw, mimetype=r.headers["Content-Type"])
@@ -60,7 +87,7 @@ def get_index_djvu():
     archive = flask.request.args.get("archive").strip()
     id_ = flask.request.args.get("id").strip()
     return flask.redirect(
-        flask.url_for("proxy.get_djvu", archive=archive, id=id_), code=302
+        flask.url_for("proxy.get_djvu_djvu_on_error", archive=archive, id=id_), code=302
     )
 
 

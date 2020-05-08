@@ -13,11 +13,16 @@
     Med lite mer arbete och med minimal funktionalitet kan den rena HTML5 DjVU-visaren <a href="https://github.com/mateusz-matela/djvu-html5/">djvu-html5</a> användas.
     <br/><br/>
     Tidigare krävdes att du hade en NPAPI DjVU-plugin installerad för att det skulle gå att öppna en djvu länk direkt i webbläsaren.
-    Om du har en DjVU-plugin installerad så kan du fortsätta använda den som tidigare om du så önskar.
+    Om du har en DjVU-plugin installerad så kan du fortsätta använda den som tidigare om du så önskar. <br/>
     <br/>
-    Det gick tidigare inte att att spara ner filen som länkas och sedan öppna den men det fungerar med API V4.
+    Det gick tidigare inte att att spara ner filen som länkas och sedan öppna den men det fungerar med API V4. <br/>
+    Man kan välja mellan att få fel rapporterade på två sätt, antingen som HTTP felkoder i kombination med JSON baserat felmeddelande eller som DjVU bilder. <br/>
+    DjVU baserade fel är för lösningar som NPAPI plugins som inte presenterar felmeddelanden på ett vettigt sätt. <br/>
+    API V3 gav alltid felmeddelanden i DjVU format. <br/>
+    <br/>
+    Med normal felhantering: <a href={{ index_url }}>{{ index_url }}</a>
     <br/><br/>
-    <a href={{index_url}}>{{index_url}}</a>
+    DjVU baserad felhantering: <a href={{ index_url_djvu_on_error }}>{{ index_url_djvu_on_error }}</a>
 
 </body>
 </html>

@@ -39,7 +39,14 @@ def index_url():
     index_url = flask.url_for(
         "proxy.get_djvu", archive=archive, id=document_id, _external=True
     )
-    return flask.render_template("index_url.html", index_url=index_url)
+    index_url_djvu_on_error = flask.url_for(
+        "proxy.get_djvu_djvu_on_error", archive=archive, id=document_id, _external=True
+    )
+    return flask.render_template(
+        "index_url.html",
+        index_url=index_url,
+        index_url_djvu_on_error=index_url_djvu_on_error,
+    )
 
 
 @bp.route("/update_token")

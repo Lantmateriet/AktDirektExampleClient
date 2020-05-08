@@ -127,6 +127,16 @@ class AktDirectClient:
         res = self._call_service(rel_path, stream=True, params=params)
         return res
 
+    def get_djvu_djvu_on_error(self, archive, id_):
+        """Get the dossier as a DjVU.
+
+        returns a requests response object
+        """
+        rel_path = "document/djvu_on_error/bundle.djvu"
+        params = {"archive": archive, "id": id_}
+        res = self._call_service(rel_path, stream=True, params=params)
+        return res
+
     def get_ping(self):
         """Make a communication test with Akt Direkt.
 
