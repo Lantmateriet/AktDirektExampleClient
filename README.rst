@@ -55,7 +55,7 @@ Files
 * ``akt_direkt_proxy/__init__.py``: uppsättning av applikationen
 * ``akt_direkt_proxy/client.py``: implementation av själva API Klienten
 * ``akt_direkt_proxy/templates/startpage.html``: Jinja2 template för förstasidan med formulär
-* ``akt_direkt_proxy/templates/index_url.html``: Jinja2 template med sidan som visar genererad URL
+* ``akt_direkt_proxy/templates/djvu_url.html``: Jinja2 template med sidan som visar genererad URL
 * ``config.cfg``: konfigurationsfil du behöver skapa
 * ``config.cfg_example``: exempel på konfigurationsfil
 * ``Dockerfile``: to build the example as a runnable Docker image

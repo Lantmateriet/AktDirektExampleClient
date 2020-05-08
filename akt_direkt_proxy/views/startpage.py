@@ -31,21 +31,21 @@ def index():
     return flask.render_template("startpage.html", test_result=test_result)
 
 
-@bp.route("/index_url")
-def index_url():
+@bp.route("/djvu_url")
+def djvu_url():
     """Generate a dossier URL."""
     archive = flask.request.args.get("archive").strip()
     document_id = flask.request.args.get("document_id").strip()
-    index_url = flask.url_for(
+    djvu_url = flask.url_for(
         "proxy.get_djvu", archive=archive, id=document_id, _external=True
     )
-    index_url_djvu_on_error = flask.url_for(
+    djvu_url_djvu_on_error = flask.url_for(
         "proxy.get_djvu_djvu_on_error", archive=archive, id=document_id, _external=True
     )
     return flask.render_template(
-        "index_url.html",
-        index_url=index_url,
-        index_url_djvu_on_error=index_url_djvu_on_error,
+        "djvu_url.html",
+        djvu_url=djvu_url,
+        djvu_url_djvu_on_error=djvu_url_djvu_on_error,
     )
 
 
