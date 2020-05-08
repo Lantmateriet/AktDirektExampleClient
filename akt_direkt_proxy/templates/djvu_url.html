@@ -6,7 +6,13 @@
 <body>
     <h1>Url till specificerad akt</h1>
 
-    Om du har en DjVU-plugin eller en separad DjVU-visare installerad kan du titta på akten genom att klicka på länken nedan.
+    Om du har en DjVU-plugin eller en separad DjVU-visare installerad kan du titta på akten genom att klicka på någon av dessa länkar.
+    <br/><br/>
+    Med normal felhantering: <br/><a href={{ djvu_url }}>{{ djvu_url }}</a>
+    <br/><br/>
+    DjVU baserad felhantering: <br/><a href={{ djvu_url_djvu_on_error }}>{{ djvu_url_djvu_on_error }}</a>
+    <br/><br/>
+    <br/><br/>
     <br/><br/>
     Det rekommenderade sättet att titta på DjVU med V4 APIet är att låta webbläsaren öppna bilden i en separat DjVU-visare som <a href="http://djvu.sourceforge.net/djview4.html">djview4</a>.
     <br/>
@@ -16,13 +22,11 @@
     Om du har en DjVU-plugin installerad så kan du fortsätta använda den som tidigare om du så önskar. <br/>
     <br/>
     Det gick tidigare inte att att spara ner filen som länkas och sedan öppna den men det fungerar med API V4. <br/>
+    <br/>
     Man kan välja mellan att få fel rapporterade på två sätt, antingen som HTTP felkoder i kombination med JSON baserat felmeddelande eller som DjVU bilder. <br/>
     DjVU baserade fel är för lösningar som NPAPI plugins som inte presenterar felmeddelanden på ett vettigt sätt. <br/>
     API V3 gav alltid felmeddelanden i DjVU format. <br/>
     <br/>
-    Med normal felhantering: <a href={{ djvu_url }}>{{ djvu_url }}</a>
-    <br/><br/>
-    DjVU baserad felhantering: <a href={{ djvu_url_djvu_on_error }}>{{ djvu_url_djvu_on_error }}</a>
 
 </body>
 </html>
