@@ -1,4 +1,4 @@
-2020-
+2020-05-12
 ==========
 
 * Bytte från Akt Direkt API V3 till V4

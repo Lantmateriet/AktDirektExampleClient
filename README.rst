@@ -19,6 +19,9 @@ Applikation är utvecklad för och testad med Python 3.6 i GNU/Linux miljö.
 
 NOTERA: Denna version av klienten är för version 4 av APIet, för föregånde version se GIT branchen api-v3.
 
+UPPGRADERA: Om du har en existerande config.cfg för api-v3 du vill använda så behöver v3.0
+ändras till v4.0 i SERVICE_URL i filen.
+
 
 Funktioner
 ==========
@@ -37,13 +40,15 @@ Funktioner
 
   * Autentiserande proxy som tar hand om följande anrop:
 
-    * URLen som genereras av formuläret ovan refererar till http://localhost:5000/document/bundle.djvu med nödvändiga query parametrar.
-    * Äldre URL http://localhost:5000/document/index.djvu redirectar nu till ovansående med nödvändiga query parametrar.
+    * URLarna som genereras av formuläret ovan refererar till http://localhost:5000/document/bundle.djvu samt
+      http://localhost:5000/document/djvu_on_error/bundle.djvu med nödvändiga query parametrar.
+    * Äldre URL http://localhost:5000/document/index.djvu redirectar nu till ovansående djvu_on_error URL med nödvändiga query parametrar.
 
   Ex::
 
     djview "http://localhost:5000/document/bundle.djvu?archive=21&id=2180k-10/11"
     djview "http://localhost:5000/document/bundle.djvu?archive=k21g&id=2180k-10/11"
+    djview "http://localhost:5000/document/djvu_on_error/bundle.djvu?archive=k21g&id=2180k-10/11"
     curl http://localhost:5000/ping  (ersätter tidigare /healthcheck)
 
 
