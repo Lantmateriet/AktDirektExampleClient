@@ -9,10 +9,10 @@ python-dotenv = "*"
 requests-oauthlib = "*"
 
 [dev-packages]
-prospector = "*"
 docutils = "*"
 pygments = "*"
-pyyaml = "*"
+prospector = "*"
+flake8 = "==3.8.4"  # newer causes a dep conflict with pycodestyle
 black = "*"
 
 [requires]
