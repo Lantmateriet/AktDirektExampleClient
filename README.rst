@@ -1,3 +1,8 @@
+!!! WARNING
+   There is no plan to continue to provide AktDirektExampleClients for API versions after 4.0.
+   After the 3.0 and 4.0 APIs are shutdown this repository will be removed from github,
+   this removal will probably happen during 2023Q2.
+
 =============================
 Example client for Akt Direkt
 =============================
